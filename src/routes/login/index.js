@@ -3,15 +3,15 @@ const sql = require("../../db/connection.js");
 const jwt = require("jsonwebtoken");
 router.post("/", async (req, res) => {
   try {
-    const { email, mobile } = req.body;
+    const { mobile, email } = req.body;
     const results = await sql(
-      `SELECT * from register where email=? && mobile=?`,
-      [email, mobile]
+      `SELECT * from register where mobile=? && email=?`,
+      [mobile, email]
     );
     if (results && results.length) {
       const token = jwt.sign(
         {
-          number: results.number,
+          mobile: results.mobile,
           email: results.email,
         },
         process.env.secretKey,
